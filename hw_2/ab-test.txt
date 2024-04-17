@@ -1,0 +1,47 @@
+# ab -c 3 -t 1 http://app-hw2:8000/
+This is ApacheBench, Version 2.3 <$Revision: 1903618 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking app-hw2 (be patient)
+Completed 5000 requests
+Completed 10000 requests
+Completed 15000 requests
+Finished 15303 requests
+
+
+Server Software:        gunicorn
+Server Hostname:        app-hw2
+Server Port:            8000
+
+Document Path:          /
+Document Length:        14 bytes
+
+Concurrency Level:      3
+Time taken for tests:   1.000 seconds
+Complete requests:      15303
+Failed requests:        0
+Total transferred:      2341359 bytes
+HTML transferred:       214242 bytes
+Requests per second:    15302.86 [#/sec] (mean)
+Time per request:       0.196 [ms] (mean)
+Time per request:       0.065 [ms] (mean, across all concurrent requests)
+Transfer rate:          2286.46 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.0      0       1
+Processing:     0    0   0.1      0      10
+Waiting:        0    0   0.1      0       9
+Total:          0    0   0.1      0      10
+
+Percentage of the requests served within a certain time (ms)
+  50%      0
+  66%      0
+  75%      0
+  80%      0
+  90%      0
+  95%      0
+  98%      0
+  99%      0
+ 100%     10 (longest request)
