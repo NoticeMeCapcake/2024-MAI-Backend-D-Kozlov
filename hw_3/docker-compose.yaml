@@ -1,0 +1,50 @@
+version: "1.5"
+
+services:
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - django-app
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
+    environment:
+      - NGINX_PORT=80
+
+  postgres:
+    hostname: postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=blog
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "echo 'SELECT 1;' | psql -U postgres -d blog" ]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  django-app:
+    build:
+      context: ./djangoProject
+    container_name: app-hw3
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./djangoProject:/app
+    ports:
+      - "8000:8000"
+    entrypoint: bash -c "
+        python manage.py makemigrations 
+        && python manage.py migrate 
+        && python manage.py runserver 0.0.0.0:8000
+      "
+
+
+volumes:
+  postgres_data:
+    driver: local
