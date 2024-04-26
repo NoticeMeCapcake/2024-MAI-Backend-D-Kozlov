@@ -1,4 +1,4 @@
-from project.project.cache import LRUCache
+from cache import LRUCache
 
 cache = LRUCache(100)
 cache.set('Jesse', 'Pinkman')

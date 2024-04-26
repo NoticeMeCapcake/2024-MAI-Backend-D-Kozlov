@@ -4,7 +4,6 @@ from django.db import models
 
 
 class UserProfile(models.Model):
-    # id = models.UUIDField(primary_key=True, auto_created=True)
     login = models.CharField(max_length=200)
     password = models.CharField(max_length=256)
 
@@ -13,7 +12,6 @@ class UserProfile(models.Model):
 
 
 class UserPost(models.Model):
-    # id = models.UUIDField(primary_key=True, auto_created=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
@@ -25,7 +23,6 @@ class UserPost(models.Model):
 
 
 class Comment(models.Model):
-    # id = models.UUIDField(primary_key=True, auto_created=True)
     author_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     post_id = models.ForeignKey(UserPost, on_delete=models.CASCADE)
     content = models.TextField()
@@ -33,3 +30,16 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
+
+
+class Like(models.Model):
+    author_id = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    post_id = models.ForeignKey(UserPost, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.author_id) + ": " + str(self.post_id)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['author_id', 'post_id'], name='unique_author-post')
+        ]

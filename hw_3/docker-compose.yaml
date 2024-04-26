@@ -1,4 +1,4 @@
-version: "1.5"
+version: "1.6"
 
 services:
   nginx:
@@ -21,19 +21,13 @@ services:
       - POSTGRES_DB=blog
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    healthcheck:
-      test: [ "CMD-SHELL", "echo 'SELECT 1;' | psql -U postgres -d blog" ]
-      interval: 3s
-      timeout: 5s
-      retries: 10
 
   django-app:
     build:
       context: ./djangoProject
     container_name: app-hw3
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     volumes:
       - ./djangoProject:/app
     ports:
@@ -43,8 +37,3 @@ services:
         && python manage.py migrate 
         && python manage.py runserver 0.0.0.0:8000
       "
-
-
-volumes:
-  postgres_data:
-    driver: local
